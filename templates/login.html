@@ -1,2 +1,508 @@
-{% extends "base.html" %}{% block title %}ورود | SMJ{% endblock %}
-{% block content %}<section class="auth-section"><form class="auth-card" method="post"><span class="kicker">WELCOME BACK</span><h1>ورود به حساب</h1><label>ایمیل<input type="email" name="email" required autocomplete="email"></label><label>رمز عبور<input type="password" name="password" required autocomplete="current-password"></label><button class="btn full" type="submit">ورود</button><p>حساب نداری؟ <a href="{{ url_for('register') }}">ثبت‌نام کن</a></p></form></section>{% endblock %}
+{% extends "base.html" %}
+{% block title %}ورود به حساب | SMJ Network{% endblock %}
+
+{% block content %}
+
+<style>
+.login-page {
+    min-height: 760px;
+    padding: 75px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse at 15% 30%, rgba(155,107,255,.13), transparent 40%),
+        radial-gradient(ellipse at 85% 75%, rgba(184,255,57,.09), transparent 40%);
+}
+
+.login-page::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: .13;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);
+    background-size: 55px 55px;
+    mask-image: linear-gradient(transparent, black, transparent);
+}
+
+.login-container {
+    width: 100%;
+    max-width: 1050px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    z-index: 2;
+    background: rgba(16,19,29,.94);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 30px 100px rgba(0,0,0,.45);
+    backdrop-filter: blur(20px);
+}
+
+.login-info {
+    padding: 55px 45px;
+    background:
+        radial-gradient(circle at 70% 30%, rgba(155,107,255,.25), transparent 45%),
+        linear-gradient(145deg,#17182b,#10151b);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 620px;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-info::after {
+    content: "SMJ";
+    position: absolute;
+    bottom: -55px;
+    left: -15px;
+    font: 900 170px 'Space Grotesk',sans-serif;
+    color: rgba(255,255,255,.025);
+    pointer-events: none;
+}
+
+.login-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    direction: ltr;
+}
+
+.login-logo-icon {
+    width: 48px;
+    height: 48px;
+    background: #b8ff39;
+    color: #10150a;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    font: 900 30px 'Space Grotesk',sans-serif;
+    box-shadow: 0 0 35px rgba(184,255,57,.3);
+}
+
+.login-logo-text {
+    font: 800 25px 'Space Grotesk',sans-serif;
+}
+
+.login-logo-text span {
+    color: #b8ff39;
+}
+
+.login-logo-text small {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 4px;
+    color: #8d96a6;
+}
+
+.login-info-content {
+    position: relative;
+    z-index: 2;
+}
+
+.login-kicker {
+    color: #b8ff39;
+    font: 700 10px 'Space Grotesk',sans-serif;
+    letter-spacing: 2px;
+    direction: ltr;
+    display: inline-block;
+}
+
+.login-info h2 {
+    font-size: 43px;
+    line-height: 1.5;
+    font-weight: 900;
+    margin: 20px 0;
+}
+
+.login-info h2 span {
+    color: #b8ff39;
+}
+
+.login-info p {
+    color: #9da5b4;
+    font-size: 13px;
+    line-height: 2.3;
+    max-width: 370px;
+}
+
+.login-features {
+    display: grid;
+    gap: 17px;
+    margin-top: 35px;
+}
+
+.login-feature {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    color: #dce1e9;
+    font-size: 12px;
+}
+
+.login-feature i {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    background: rgba(184,255,57,.1);
+    color: #b8ff39;
+    border-radius: 9px;
+    font-size: 16px;
+}
+
+.login-info-footer {
+    color: #687181;
+    font: 9px 'Space Grotesk',sans-serif;
+    letter-spacing: 1.5px;
+    direction: ltr;
+}
+
+.login-form-side {
+    padding: 55px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-form-side .form-top {
+    margin-bottom: 35px;
+}
+
+.login-form-side .form-top span {
+    color: #b8ff39;
+    font: 700 9px 'Space Grotesk',sans-serif;
+    letter-spacing: 2px;
+    direction: ltr;
+    display: inline-block;
+}
+
+.login-form-side h1 {
+    font-size: 31px;
+    font-weight: 900;
+    margin: 12px 0 7px;
+}
+
+.login-form-side .subtitle {
+    color: #8992a2;
+    font-size: 11px;
+}
+
+.login-field {
+    margin-bottom: 21px;
+}
+
+.login-field label {
+    display: block;
+    color: #c7ced9;
+    font-size: 11px;
+    margin-bottom: 9px;
+    font-weight: 600;
+}
+
+.login-input-wrap {
+    position: relative;
+}
+
+.login-input-wrap > i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #7e8798;
+    font-size: 16px;
+}
+
+.login-input-wrap input {
+    width: 100%;
+    height: 53px;
+    padding: 0 45px 0 45px;
+    background: #090d15;
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 9px;
+    color: #fff;
+    font: 12px 'Vazirmatn',sans-serif;
+    outline: none;
+    transition: .25s;
+}
+
+.login-input-wrap input:focus {
+    border-color: #b8ff39;
+    box-shadow: 0 0 0 3px rgba(184,255,57,.08);
+}
+
+.login-input-wrap input::placeholder {
+    color: #596273;
+}
+
+.password-toggle {
+    position: absolute;
+    left: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 0;
+    background: transparent;
+    color: #7e8798;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.login-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 4px 0 24px;
+    color: #8d96a6;
+    font-size: 10px;
+}
+
+.remember-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+}
+
+.remember-label input {
+    accent-color: #b8ff39;
+}
+
+.login-submit {
+    width: 100%;
+    height: 53px;
+    border: 0;
+    border-radius: 9px;
+    background: #b8ff39;
+    color: #10150a;
+    font: 900 13px 'Vazirmatn',sans-serif;
+    cursor: pointer;
+    transition: .25s;
+    box-shadow: 0 10px 30px rgba(184,255,57,.13);
+}
+
+.login-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(184,255,57,.25);
+}
+
+.login-submit i {
+    margin-right: 8px;
+}
+
+.login-register {
+    text-align: center;
+    color: #8d96a6;
+    font-size: 11px;
+    margin-top: 28px;
+}
+
+.login-register a {
+    color: #b8ff39;
+    font-weight: 800;
+}
+
+.login-security {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 25px;
+    color: #687181;
+    font-size: 9px;
+}
+
+.login-security i {
+    color: #b8ff39;
+}
+
+@media(max-width:800px) {
+    .login-page {
+        padding: 35px 15px;
+    }
+
+    .login-container {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+    }
+
+    .login-info {
+        min-height: auto;
+        padding: 30px;
+    }
+
+    .login-info-content {
+        margin-top: 35px;
+    }
+
+    .login-info h2 {
+        font-size: 30px;
+    }
+
+    .login-features {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .login-info-footer {
+        margin-top: 30px;
+    }
+
+    .login-form-side {
+        padding: 35px 25px;
+    }
+}
+
+@media(max-width:420px) {
+    .login-features {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<section class="login-page">
+    <div class="login-container">
+
+        <div class="login-info">
+            <a href="{{ url_for('index') }}" class="login-logo">
+                <div class="login-logo-icon">S</div>
+                <div class="login-logo-text">
+                    SMJ<span>.</span>
+                    <small>NETWORK</small>
+                </div>
+            </a>
+
+            <div class="login-info-content">
+                <span class="login-kicker">WELCOME BACK PLAYER</span>
+
+                <h2>
+                    دوباره وقت<br>
+                    <span>درخشیدن</span> رسیده.
+                </h2>
+
+                <p>
+                    دنیای SMJ منتظرته! وارد حساب کاربریت شو
+                    و ماجراجویی رو از همون‌جایی که رها کردی،
+                    ادامه بده.
+                </p>
+
+                <div class="login-features">
+                    <div class="login-feature">
+                        <i class="bi bi-controller"></i>
+                        <span>بازگشت به بازی</span>
+                    </div>
+
+                    <div class="login-feature">
+                        <i class="bi bi-trophy"></i>
+                        <span>ادامه رقابت‌ها</span>
+                    </div>
+
+                    <div class="login-feature">
+                        <i class="bi bi-person-badge"></i>
+                        <span>پروفایل اختصاصی</span>
+                    </div>
+
+                    <div class="login-feature">
+                        <i class="bi bi-shield-check"></i>
+                        <span>ورود امن به حساب</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="login-info-footer">
+                YOUR WORLD. YOUR RULES.
+            </div>
+        </div>
+
+        <div class="login-form-side">
+            <div class="form-top">
+                <span>PLAYER AUTHENTICATION</span>
+                <h1>خوش برگشتی!</h1>
+                <p class="subtitle">اطلاعات حساب خودت رو وارد کن.</p>
+            </div>
+
+            <form method="POST" action="{{ url_for('login') }}">
+
+                <div class="login-field">
+                    <label for="email">ایمیل یا نام کاربری</label>
+                    <div class="login-input-wrap">
+                        <i class="bi bi-person"></i>
+                        <input
+                            type="text"
+                            id="email"
+                            name="email"
+                            placeholder="ایمیل یا نام کاربری"
+                            autocomplete="username"
+                            required>
+                    </div>
+                </div>
+
+                <div class="login-field">
+                    <label for="password">رمز عبور</label>
+                    <div class="login-input-wrap">
+                        <i class="bi bi-lock"></i>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="رمز عبور حساب"
+                            autocomplete="current-password"
+                            required>
+                        <button type="button" class="password-toggle" id="togglePassword">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="login-options">
+                    <label class="remember-label">
+                        <input type="checkbox" name="remember">
+                        مرا به خاطر بسپار
+                    </label>
+                </div>
+
+                <button type="submit" class="login-submit">
+                    ورود به حساب
+                    <i class="bi bi-arrow-left"></i>
+                </button>
+
+            </form>
+
+            <div class="login-register">
+                هنوز حساب نداری؟
+                <a href="{{ url_for('register') }}">همین حالا ثبت‌نام کن</a>
+            </div>
+
+            <div class="login-security">
+                <i class="bi bi-shield-lock-fill"></i>
+                اتصال امن به حساب کاربری SMJ
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+const togglePassword = document.getElementById("togglePassword");
+
+togglePassword.addEventListener("click", function() {
+    const password = document.getElementById("password");
+    const icon = this.querySelector("i");
+
+    if (password.type === "password") {
+        password.type = "text";
+        icon.classList.replace("bi-eye", "bi-eye-slash");
+    } else {
+        password.type = "password";
+        icon.classList.replace("bi-eye-slash", "bi-eye");
+    }
+});
+</script>
+
+{% endblock %}
