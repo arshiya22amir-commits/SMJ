@@ -1,2 +1,534 @@
-{% extends "base.html" %}{% block title %}ثبت‌نام | SMJ{% endblock %}
-{% block content %}<section class="auth-section"><form class="auth-card" method="post"><span class="kicker">JOIN SMJ COMMUNITY</span><h1>ساخت حساب</h1><label>نام کاربری<input name="username" minlength="3" required autocomplete="username"></label><label>ایمیل<input type="email" name="email" required autocomplete="email"></label><label>رمز عبور<input type="password" name="password" minlength="8" required autocomplete="new-password"></label><button class="btn full" type="submit">ساخت حساب</button><p>قبلاً ثبت‌نام کردی؟ <a href="{{ url_for('login') }}">وارد شو</a></p></form></section>{% endblock %}
+{% extends "base.html" %}
+{% block title %}ساخت حساب | SMJ Network{% endblock %}
+
+{% block content %}
+
+<style>
+.register-page {
+    min-height: 760px;
+    padding: 75px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse at 15% 30%, rgba(155,107,255,.13), transparent 40%),
+        radial-gradient(ellipse at 85% 75%, rgba(184,255,57,.09), transparent 40%);
+}
+
+.register-page::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: .13;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);
+    background-size: 55px 55px;
+    mask-image: linear-gradient(transparent, black, transparent);
+}
+
+.register-container {
+    width: 100%;
+    max-width: 1050px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    z-index: 2;
+    background: rgba(16,19,29,.92);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 30px 100px rgba(0,0,0,.45);
+    backdrop-filter: blur(20px);
+}
+
+.register-info {
+    padding: 55px 45px;
+    background:
+        radial-gradient(circle at 70% 30%, rgba(155,107,255,.25), transparent 45%),
+        linear-gradient(145deg,#17182b,#10151b);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 620px;
+    position: relative;
+    overflow: hidden;
+}
+
+.register-info::after {
+    content: "SMJ";
+    position: absolute;
+    bottom: -55px;
+    left: -15px;
+    font: 900 170px 'Space Grotesk',sans-serif;
+    color: rgba(255,255,255,.025);
+    pointer-events: none;
+}
+
+.register-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    direction: ltr;
+}
+
+.register-logo-icon {
+    width: 48px;
+    height: 48px;
+    background: #b8ff39;
+    color: #10150a;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    font: 900 30px 'Space Grotesk',sans-serif;
+    box-shadow: 0 0 35px rgba(184,255,57,.3);
+}
+
+.register-logo-text {
+    font: 800 25px 'Space Grotesk',sans-serif;
+}
+
+.register-logo-text span {
+    color: #b8ff39;
+}
+
+.register-logo-text small {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 4px;
+    color: #8d96a6;
+}
+
+.register-info-content {
+    position: relative;
+    z-index: 2;
+}
+
+.register-kicker {
+    color: #b8ff39;
+    font: 700 10px 'Space Grotesk',sans-serif;
+    letter-spacing: 2px;
+    direction: ltr;
+    display: inline-block;
+}
+
+.register-info h2 {
+    font-size: 43px;
+    line-height: 1.5;
+    font-weight: 900;
+    margin: 20px 0;
+}
+
+.register-info h2 span {
+    color: #b8ff39;
+}
+
+.register-info p {
+    color: #9da5b4;
+    font-size: 13px;
+    line-height: 2.3;
+    max-width: 370px;
+}
+
+.register-features {
+    display: grid;
+    gap: 17px;
+    margin-top: 35px;
+}
+
+.register-feature {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    color: #dce1e9;
+    font-size: 12px;
+}
+
+.register-feature i {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    background: rgba(184,255,57,.1);
+    color: #b8ff39;
+    border-radius: 9px;
+    font-size: 16px;
+}
+
+.register-info-footer {
+    color: #687181;
+    font: 9px 'Space Grotesk',sans-serif;
+    letter-spacing: 1.5px;
+    direction: ltr;
+}
+
+.register-form-side {
+    padding: 55px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.register-form-side .form-top {
+    margin-bottom: 30px;
+}
+
+.register-form-side .form-top span {
+    color: #b8ff39;
+    font: 700 9px 'Space Grotesk',sans-serif;
+    letter-spacing: 2px;
+    direction: ltr;
+    display: inline-block;
+}
+
+.register-form-side h1 {
+    font-size: 31px;
+    font-weight: 900;
+    margin: 12px 0 7px;
+}
+
+.register-form-side .subtitle {
+    color: #8992a2;
+    font-size: 11px;
+}
+
+.register-field {
+    margin-bottom: 19px;
+}
+
+.register-field label {
+    display: block;
+    color: #c7ced9;
+    font-size: 11px;
+    margin-bottom: 9px;
+    font-weight: 600;
+}
+
+.register-input-wrap {
+    position: relative;
+}
+
+.register-input-wrap i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #7e8798;
+    font-size: 16px;
+}
+
+.register-input-wrap input {
+    width: 100%;
+    height: 51px;
+    padding: 0 45px 0 15px;
+    background: #090d15;
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 9px;
+    color: #fff;
+    font: 12px 'Vazirmatn',sans-serif;
+    outline: none;
+    transition: .25s;
+}
+
+.register-input-wrap input:focus {
+    border-color: #b8ff39;
+    box-shadow: 0 0 0 3px rgba(184,255,57,.08);
+}
+
+.register-input-wrap input::placeholder {
+    color: #596273;
+}
+
+.password-toggle {
+    position: absolute;
+    left: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 0;
+    background: transparent;
+    color: #7e8798;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.register-submit {
+    width: 100%;
+    height: 53px;
+    margin-top: 8px;
+    border: 0;
+    border-radius: 9px;
+    background: #b8ff39;
+    color: #10150a;
+    font: 900 13px 'Vazirmatn',sans-serif;
+    cursor: pointer;
+    transition: .25s;
+    box-shadow: 0 10px 30px rgba(184,255,57,.13);
+}
+
+.register-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(184,255,57,.25);
+}
+
+.register-submit i {
+    margin-right: 8px;
+}
+
+.register-login {
+    text-align: center;
+    color: #8d96a6;
+    font-size: 11px;
+    margin-top: 25px;
+}
+
+.register-login a {
+    color: #b8ff39;
+    font-weight: 800;
+}
+
+.register-security {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 25px;
+    color: #687181;
+    font-size: 9px;
+}
+
+.register-security i {
+    color: #b8ff39;
+}
+
+.password-hint {
+    color: #727d8e;
+    font-size: 9px;
+    margin-top: 7px;
+}
+
+@media(max-width:800px) {
+    .register-page {
+        padding: 35px 15px;
+    }
+
+    .register-container {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+    }
+
+    .register-info {
+        min-height: auto;
+        padding: 30px;
+    }
+
+    .register-info-content {
+        margin-top: 35px;
+    }
+
+    .register-info h2 {
+        font-size: 30px;
+    }
+
+    .register-features {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .register-info-footer {
+        margin-top: 30px;
+    }
+
+    .register-form-side {
+        padding: 35px 25px;
+    }
+}
+
+@media(max-width:420px) {
+    .register-features {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<section class="register-page">
+    <div class="register-container">
+
+        <div class="register-info">
+            <a href="{{ url_for('index') }}" class="register-logo">
+                <div class="register-logo-icon">S</div>
+                <div class="register-logo-text">
+                    SMJ<span>.</span>
+                    <small>NETWORK</small>
+                </div>
+            </a>
+
+            <div class="register-info-content">
+                <span class="register-kicker">WELCOME TO THE NEXT LEVEL</span>
+
+                <h2>
+                    داستان بعدی تو<br>
+                    از <span>اینجا</span> شروع می‌شه.
+                </h2>
+
+                <p>
+                    به شبکه SMJ بپیوند و وارد دنیایی از رقابت،
+                    ماجراجویی و تجربه‌های فراموش‌نشدنی شو.
+                    جای تو بین بازیکن‌ها خالیه!
+                </p>
+
+                <div class="register-features">
+                    <div class="register-feature">
+                        <i class="bi bi-controller"></i>
+                        <span>گیم‌مودهای متنوع</span>
+                    </div>
+
+                    <div class="register-feature">
+                        <i class="bi bi-lightning-charge"></i>
+                        <span>رقابت هیجان‌انگیز</span>
+                    </div>
+
+                    <div class="register-feature">
+                        <i class="bi bi-people"></i>
+                        <span>جامعه بازیکنان</span>
+                    </div>
+
+                    <div class="register-feature">
+                        <i class="bi bi-shield-check"></i>
+                        <span>حساب کاربری اختصاصی</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="register-info-footer">
+                PLAY DIFFERENT · BE LEGENDARY
+            </div>
+        </div>
+
+        <div class="register-form-side">
+            <div class="form-top">
+                <span>CREATE YOUR ACCOUNT</span>
+                <h1>ساخت حساب کاربری</h1>
+                <p class="subtitle">اطلاعاتت رو وارد کن و به خانواده SMJ ملحق شو.</p>
+            </div>
+
+            <form method="POST" id="registerForm">
+
+                <div class="register-field">
+                    <label for="username">نام کاربری</label>
+                    <div class="register-input-wrap">
+                        <i class="bi bi-person"></i>
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="نام کاربری خودت رو وارد کن"
+                            minlength="3"
+                            maxlength="24"
+                            pattern="[A-Za-z0-9_]+"
+                            title="فقط حروف انگلیسی، عدد و آندرلاین مجاز است."
+                            autocomplete="username"
+                            required>
+                    </div>
+                </div>
+
+                <div class="register-field">
+                    <label for="email">آدرس ایمیل</label>
+                    <div class="register-input-wrap">
+                        <i class="bi bi-envelope"></i>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="example@email.com"
+                            autocomplete="email"
+                            required>
+                    </div>
+                </div>
+
+                <div class="register-field">
+                    <label for="password">رمز عبور</label>
+                    <div class="register-input-wrap">
+                        <i class="bi bi-lock"></i>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="حداقل ۸ کاراکتر"
+                            minlength="8"
+                            autocomplete="new-password"
+                            required>
+                        <button type="button" class="password-toggle" data-target="password">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-hint">رمز عبور باید حداقل ۸ کاراکتر باشد.</div>
+                </div>
+
+                <div class="register-field">
+                    <label for="confirm_password">تکرار رمز عبور</label>
+                    <div class="register-input-wrap">
+                        <i class="bi bi-shield-lock"></i>
+                        <input
+                            type="password"
+                            id="confirm_password"
+                            placeholder="رمز عبور رو دوباره وارد کن"
+                            autocomplete="new-password"
+                            required>
+                        <button type="button" class="password-toggle" data-target="confirm_password">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="register-submit">
+                    ساخت حساب و ورود به SMJ
+                    <i class="bi bi-arrow-left"></i>
+                </button>
+
+            </form>
+
+            <div class="register-login">
+                قبلاً حساب ساختی؟
+                <a href="{{ url_for('login') }}">وارد حساب شو</a>
+            </div>
+
+            <div class="register-security">
+                <i class="bi bi-shield-lock-fill"></i>
+                اطلاعات حساب تو به‌صورت امن ذخیره می‌شود.
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+document.querySelectorAll(".password-toggle").forEach(button => {
+    button.addEventListener("click", () => {
+        const input = document.getElementById(button.dataset.target);
+        const icon = button.querySelector("i");
+
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.replace("bi-eye", "bi-eye-slash");
+        } else {
+            input.type = "password";
+            icon.classList.replace("bi-eye-slash", "bi-eye");
+        }
+    });
+});
+
+document.getElementById("registerForm").addEventListener("submit", function(event) {
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirm_password").value;
+
+    if (password !== confirmPassword) {
+        event.preventDefault();
+        alert("رمز عبور و تکرار آن یکسان نیستند.");
+    }
+});
+</script>
+
+{% endblock %}
