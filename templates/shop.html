@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% block title %}فروشگاه | SMJ{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="section-heading"><div><span class="kicker">SMJ STORE</span><h2>فروشگاه <em>رنک‌ها</em></h2></div><p>رنک موردعلاقه‌ات را انتخاب کن.</p></div>
+  <div class="rank-grid">
+    {% for rank in ranks %}
+    <article class="rank-card {{ rank.style }}">
+      <span class="kicker">SMJ NETWORK RANK</span><div class="rank-crown"><i class="bi bi-gem"></i></div>
+      <h2>{{ rank.name }}</h2><div class="rank-price">{{ rank.price }}</div>
+      <ul>{% for feature in rank.features %}<li><i class="bi bi-check2"></i>{{ feature }}</li>{% endfor %}</ul>
+      <a class="btn full" href="{{ url_for('support') if session.get('user_id') else url_for('login') }}">درخواست خرید / اطلاعات بیشتر</a>
+    </article>
+    {% endfor %}
+  </div>
+  <p class="store-note"><i class="bi bi-info-circle"></i> خرید آنلاین و پرداخت هنوز فعال نیست. برای جلوگیری از پرداخت اشتباه، سفارش‌ها فعلاً از طریق پشتیبانی پیگیری می‌شوند.</p>
+</section>
+{% endblock %}

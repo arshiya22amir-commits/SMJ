@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block title %}پشتیبانی | SMJ{% endblock %}
+{% block content %}
+<section class="auth-section"><form class="auth-card" method="post">
+  <span class="kicker">SMJ SUPPORT CENTER</span><h1>ارسال درخواست پشتیبانی</h1>
+  <label>موضوع درخواست<input name="subject" required minlength="3" maxlength="100" placeholder="مثلاً مشکل ورود به سرور"></label>
+  <label>توضیحات<textarea name="message" rows="6" required minlength="10" placeholder="مشکلت رو کامل توضیح بده..."></textarea></label>
+  <button class="btn full" type="submit">ثبت درخواست</button>
+</form></section>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Our Team | SMJ Network{% endblock %}
+{% block content %}
+<section class="team-hero">
+  <div class="team-hero-grid"></div>
+  <div class="team-hero-content reveal">
+    <span class="section-kicker"><i class="bi bi-people-fill"></i> THE PEOPLE BEHIND SMJ</span>
+    <h1>MEET THE <span>TEAM</span></h1>
+    <p>آدم‌هایی که پشت دنیای SMJ Network ایستاده‌اند؛ از مدیریت شبکه تا توسعه و ساخت دنیای بازی.</p>
+    <div class="team-hero-meta"><span><i class="bi bi-shield-check"></i> ۷ عضو تیم</span><span><i class="bi bi-controller"></i> ONE NETWORK. ONE TEAM.</span></div>
+  </div>
+  <div class="team-orbit team-orbit-a"></div><div class="team-orbit team-orbit-b"></div>
+  <div class="team-hero-mark">SMJ<span>.</span></div>
+</section>
+<section class="team-section">
+  <div class="team-section-heading">
+    <div><span class="section-kicker">OUR CREW / ۲۰۲۶</span><h2>ساختن یک <span>تجربه متفاوت</span></h2></div>
+    <p>هر عضو، بخشی از قدرت این شبکه است.</p>
+  </div>
+  <div class="team-grid">
+    {% for member in team_members %}
+    <article class="team-card team-{{ member.tone }} reveal">
+      <div class="team-card-top"><span class="team-index">// {{ "%02d"|format(loop.index) }}</span><span class="team-status"><i></i> TEAM MEMBER</span></div>
+      <div class="team-avatar-wrap"><div class="team-avatar-glow"></div><img class="team-avatar" src="{{ member.avatar }}" alt="Minecraft avatar of {{ member.name }}" loading="lazy"><span class="team-avatar-corner"></span></div>
+      <div class="team-member-info"><span class="team-role">{{ member.role }}</span><h3>{{ member.name }}</h3><p>{{ member.description }}</p></div>
+      <div class="team-card-bottom"><span>SMJ NETWORK</span><i class="bi bi-controller"></i></div>
+    </article>
+    {% endfor %}
+  </div>
+  <div class="team-note"><i class="bi bi-info-circle"></i><span>آواتارها فعلاً نمونه‌های پیش‌فرض Minecraft هستند و با دریافت آیدی هر عضو می‌توان آن‌ها را به اسکین واقعی بازیکن تغییر داد.</span></div>
+</section>
+{% endblock %}

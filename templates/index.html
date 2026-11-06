@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero-shell">
+ <div class="hero-gridline"></div>
+ <div class="hero-copy reveal">
+  <div class="eyebrow"><span class="eyebrow-pulse"></span> THE NEXT LEVEL OF MINECRAFT <span class="eyebrow-line"></span></div>
+  <h1>فقط بازی نکن؛<br><span class="gradient-text">تاریخ بساز.</span></h1>
+  <p class="hero-description">به دنیایی وارد شو که هر رقابت، هر برد و هر ماجراجویی، داستان تازه‌ای برای گفتن دارد. اینجا قلمرو <b>SMJ</b> است.</p>
+  <div class="hero-buttons"><a class="button-primary" href="#status">ورود به دنیای SMJ <i class="bi bi-arrow-left"></i></a><a class="button-ghost" href="#modes"><i class="bi bi-play-circle"></i> کشف گیم‌مودها</a></div>
+  <div class="hero-proof"><div class="proof-avatars"><span>⚔</span><span>✦</span><span>◆</span></div><div><b>YOUR NEXT ADVENTURE</b><small>یک شبکه، بی‌نهایت لحظه فراموش‌نشدنی</small></div></div>
+ </div>
+ <div class="hero-visual reveal">
+  <div class="visual-orbit orbit-one"></div><div class="visual-orbit orbit-two"></div><div class="visual-glow"></div>
+  <div class="pixel-world">
+   <div class="world-sun"></div><div class="world-mountain mountain-back"></div><div class="world-mountain mountain-front"></div>
+   <div class="world-platform"></div><div class="pixel-tree tree-one"><i></i></div><div class="pixel-tree tree-two"><i></i></div>
+   <div class="world-crystal"></div><div class="world-label"><span>SMJ</span><small>ENTER THE NETWORK</small></div>
+  </div>
+  <div class="float-card float-top"><span class="float-icon"><i class="bi bi-lightning-charge-fill"></i></span><span><b>BUILT FOR PLAYERS</b><small>رقابت بدون مرز</small></span></div>
+  <div class="float-card float-bottom"><span class="online-indicator"></span><span><b id="hero-online">-- PLAYERS</b><small>در حال بررسی وضعیت</small></span></div>
+  <div class="visual-index">01 <span>/</span> 03</div>
+ </div>
+ <div class="hero-scroll"><span></span> SCROLL TO EXPLORE</div>
+</section>
+
+<section class="ticker"><div class="ticker-track"><span>PLAY DIFFERENT</span><i>✳</i><span>BUILD YOUR LEGACY</span><i>✳</i><span>OWN THE ARENA</span><i>✳</i><span>WELCOME TO SMJ</span><i>✳</i><span>PLAY DIFFERENT</span><i>✳</i><span>BUILD YOUR LEGACY</span><i>✳</i></div></section>
+
+<section class="stats-strip" id="status">
+ <div class="stat-intro"><span class="section-kicker">SERVER STATUS</span><b>همین حالا<br>به ما ملحق شو.</b></div>
+ <div class="stat-item"><span class="stat-icon"><i class="bi bi-people"></i></span><div><strong id="online-count">--</strong><small>بازیکن آنلاین</small></div></div>
+ <div class="stat-item"><span class="stat-icon"><i class="bi bi-hdd-network"></i></span><div><strong id="server-state">CHECKING</strong><small>وضعیت شبکه</small></div></div>
+ <div class="stat-item"><span class="stat-icon"><i class="bi bi-controller"></i></span><div><strong>۳ مود</strong><small>برای سبک‌های مختلف</small></div></div>
+ <div class="server-address"><small>SERVER IP</small><div><code>{{ server_address }}</code><button class="copy-btn" data-copy="{{ server_address }}" aria-label="کپی آدرس"><i class="bi bi-copy"></i></button></div><em id="version-label">برای کپی آدرس کلیک کن</em></div>
+</section>
+
+<section class="section modes-section" id="modes">
+ <div class="section-heading"><div><span class="section-kicker">CHOOSE YOUR REALM / ۰۱</span><h2>قلمرو <span class="gradient-text">خودت</span> را پیدا کن.</h2></div><p>سه مسیر متفاوت؛ یک مقصد مشترک:<br>ساختن لحظه‌هایی که فراموش نمی‌شن.</p></div>
+ <div class="mode-grid">
+  <article class="mode-card bedwars"><div class="mode-art"><div class="mode-art-glow"></div><div class="mode-emblem"><i class="bi bi-shield-shaded"></i></div><span class="mode-watermark">01</span></div><div class="mode-content"><div class="mode-meta"><span>TEAM STRATEGY</span><span class="mode-live"><i></i> GAME MODE</span></div><h3>Bed<span>Wars</span></h3><p>تیمت رو جمع کن، استراتژی بچین و آخرین تیمی باش که هنوز ایستاده.</p><a href="#status" class="mode-link">آماده نبردی؟ <i class="bi bi-arrow-left"></i></a></div></article>
+  <article class="mode-card practice"><div class="mode-art"><div class="mode-art-glow"></div><div class="mode-emblem"><i class="bi bi-crosshair"></i></div><span class="mode-watermark">02</span></div><div class="mode-content"><div class="mode-meta"><span>SKILL &amp; COMBAT</span><span class="mode-live"><i></i> GAME MODE</span></div><h3>Practice <span>PvP</span></h3><p>مهارتت رو ارتقا بده، وارد آرنا شو و قدرتت رو در دوئل‌ها ثابت کن.</p><a href="#status" class="mode-link">مهارتت رو بسنج <i class="bi bi-arrow-left"></i></a></div></article>
+  <article class="mode-card survival"><div class="mode-art"><div class="mode-art-glow"></div><div class="mode-emblem"><i class="bi bi-tree"></i></div><span class="mode-watermark">03</span></div><div class="mode-content"><div class="mode-meta"><span>OPEN WORLD</span><span class="mode-live"><i></i> GAME MODE</span></div><h3>Survival</h3><p>از نقطه صفر شروع کن، دنیای خودت رو بساز و ماجراجویی کن.</p><a href="#status" class="mode-link">ماجراجویی شروع شه <i class="bi bi-arrow-left"></i></a></div></article>
+ </div>
+</section>
+
+<section class="manifesto">
+ <div class="manifesto-mark">S<span>.</span></div><div class="manifesto-copy"><span class="section-kicker">MORE THAN A SERVER / ۰۲</span><h2>اینجا فقط وصل نمی‌شی؛<br><span class="gradient-text">عضو یک دنیایی.</span></h2><p>SMJ برای بازیکن‌هایی ساخته شده که دنبال تجربه‌ای فراتر از یک ورود ساده به بازی هستن. رقابت کن، رفیق پیدا کن و رد خودت رو توی این دنیا بذار.</p><a class="text-link" href="{{ url_for('register') }}">به جمع ما اضافه شو <i class="bi bi-arrow-left"></i></a></div>
+ <div class="manifesto-decoration"><div class="deco-square"></div><div class="deco-ring"></div><span>PLAY<br>CREATE<br>REPEAT</span></div>
+</section>
+
+<section class="section news-section" id="news">
+ <div class="section-heading"><div><span class="section-kicker">WHAT'S HAPPENING / ۰۳</span><h2>نبض <span class="gradient-text">SMJ</span></h2></div><p>آخرین خبرها، رویدادها و اتفاقات شبکه</p></div>
+ {% if news %}<div class="news-grid">{% for item in news %}<article class="news-card"><div class="news-card-top"><span><i class="bi bi-broadcast"></i> SMJ TRANSMISSION</span><small>#{{ "%02d"|format(loop.index) }}</small></div><h3>{{ item.title }}</h3><p>{{ item.body }}</p><div class="news-date"><i class="bi bi-calendar3"></i> {{ item.created_at }}</div></article>{% endfor %}</div>
+ {% else %}<div class="news-empty"><div class="empty-icon"><i class="bi bi-radioactive"></i></div><div><b>سیگنال بعدی به‌زودی دریافت می‌شود.</b><p>فعلاً خبر جدیدی منتشر نشده؛ این بخش برای اطلاعیه‌های رسمی SMJ آماده است.</p></div><span>NO NEW SIGNAL</span></div>{% endif %}
+</section>
+
+<section class="rules-band" id="rules"><div><span class="section-kicker">THE CODE / ۰۴</span><h2>بازی منصفانه،<br><span class="gradient-text">جامعه قدرتمند.</span></h2><p>برای اینکه همه از بازی لذت ببرن، چند اصل ساده رو رعایت می‌کنیم.</p></div><div class="rule-list"><div><b>۰۱</b><span><strong>احترام متقابل</strong><small>با بازیکنان و اعضای تیم محترمانه رفتار کن.</small></span><i class="bi bi-arrow-up-left"></i></div><div><b>۰۲</b><span><strong>بازی جوانمردانه</strong><small>چیت و ابزارهای ناعادلانه جایی در SMJ ندارن.</small></span><i class="bi bi-arrow-up-left"></i></div><div><b>۰۳</b><span><strong>فضای سالم</strong><small>از اسپم، توهین و تبلیغات ناخواسته دوری کن.</small></span><i class="bi bi-arrow-up-left"></i></div></div></section>
+{% endblock %}

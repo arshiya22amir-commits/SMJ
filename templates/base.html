@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090b12">
+<meta name="description" content="SMJ Network — دنیای رقابت، ماجراجویی و ماینکرفت.">
+<title>{% block title %}SMJ Network | فراتر از بازی{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="ambient ambient-a"></div><div class="ambient ambient-b"></div>
+<header class="site-header">
+  <a class="brand" href="{{ url_for('index') }}" aria-label="SMJ Network home"><span class="brand-mark">S</span><span class="brand-word">SMJ<span class="brand-dot">.</span><small>NETWORK</small></span></a>
+  <button class="menu-toggle" aria-label="باز کردن منو"><i class="bi bi-list"></i></button>
+  <nav class="main-nav">
+    <a href="{{ url_for('index') }}">خانه</a><a href="{{ url_for('index') }}#modes">گیم‌مودها</a>
+    <a href="{{ url_for('shop') }}">فروشگاه</a><a href="{{ url_for('team') }}">تیم ما</a><a href="{{ url_for('index') }}#news">اخبار</a><a href="{{ url_for('index') }}#rules">قوانین</a>
+  </nav>
+  <div class="header-actions">
+    {% if session.get('user_id') %}
+      <a class="user-chip" href="{{ url_for('profile') }}"><i class="bi bi-person-circle"></i>{{ session.get('username') }}</a>
+      {% if session.get('is_admin') %}<a class="header-login" href="{{ url_for('admin') }}">مدیریت</a>{% endif %}
+      <a class="header-cta" href="{{ url_for('logout') }}">خروج <i class="bi bi-arrow-left"></i></a>
+    {% else %}
+      <a class="header-login" href="{{ url_for('login') }}">ورود</a><a class="header-cta" href="{{ url_for('register') }}">ساخت حساب <i class="bi bi-arrow-left"></i></a>
+    {% endif %}
+  </div>
+</header>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}<div class="flash-wrap">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+<main>{% block content %}{% endblock %}</main>
+<footer class="site-footer">
+ <div class="footer-main"><div><a class="brand" href="{{ url_for('index') }}"><span class="brand-mark">S</span><span class="brand-word">SMJ<span class="brand-dot">.</span><small>NETWORK</small></span></a><p>بازی فقط شروع ماجراست.</p></div>
+ <div class="footer-links"><a href="{{ url_for('index') }}#modes">گیم‌مودها</a><a href="{{ url_for('shop') }}">فروشگاه</a><a href="{{ url_for('team') }}">تیم ما</a><a href="{{ url_for('support') }}">پشتیبانی</a></div>
+ <div class="footer-social"><span>JOIN THE COMMUNITY</span><div class="social-placeholder"><i class="bi bi-discord"></i><i class="bi bi-instagram"></i><i class="bi bi-youtube"></i></div></div></div>
+ <div class="footer-bottom"><span>© ۲۰۲۶ SMJ Network. تمامی حقوق محفوظ است.</span><span>Designed &amp; Developed by <b>Salvador</b></span></div>
+</footer>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body></html>

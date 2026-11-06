@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% block title %}پروفایل | SMJ{% endblock %}
+{% block content %}
+<section class="section profile-section">
+  <span class="kicker">PLAYER ACCOUNT</span><h1>پروفایل بازیکن</h1>
+  <div class="profile-card">
+    <div class="profile-avatar"><i class="bi bi-person-fill"></i></div>
+    <div><h2>{{ user.username }}</h2><p>{{ user.email }}</p><small>عضویت: {{ user.created_at }}</small></div>
+  </div>
+  <div class="profile-heading"><h2>درخواست‌های پشتیبانی</h2><a class="btn btn-small" href="{{ url_for('support') }}">ثبت درخواست جدید</a></div>
+  {% for ticket in tickets %}
+  <div class="ticket-row"><div><b>{{ ticket.subject }}</b><small>{{ ticket.created_at }}</small></div><span class="ticket-status">{{ ticket.status }}</span></div>
+  {% else %}<div class="empty-news"><p>هنوز درخواستی ثبت نکرده‌ای.</p></div>{% endfor %}
+</section>
+{% endblock %}
