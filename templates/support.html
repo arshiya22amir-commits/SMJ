@@ -1,9 +1,397 @@
-{% extends "base.html" %}{% block title %}پشتیبانی | SMJ{% endblock %}
+
+
+{% extends "base.html" %}
+
+{% block title %}پشتیبانی | SMJ Network{% endblock %}
+
 {% block content %}
-<section class="auth-section"><form class="auth-card" method="post">
-  <span class="kicker">SMJ SUPPORT CENTER</span><h1>ارسال درخواست پشتیبانی</h1>
-  <label>موضوع درخواست<input name="subject" required minlength="3" maxlength="100" placeholder="مثلاً مشکل ورود به سرور"></label>
-  <label>توضیحات<textarea name="message" rows="6" required minlength="10" placeholder="مشکلت رو کامل توضیح بده..."></textarea></label>
-  <button class="btn full" type="submit">ثبت درخواست</button>
-</form></section>
+
+<style>
+.support-page {
+    max-width: 1150px;
+    margin: 65px auto 100px;
+    padding: 0 24px;
+}
+
+.support-hero {
+    text-align: center;
+    padding: 55px 20px;
+    border: 1px solid #a178ff35;
+    border-radius: 22px;
+    background:
+        radial-gradient(ellipse at 50% 0%, #a178ff24, transparent 65%),
+        linear-gradient(140deg, #151523, #10131d);
+    margin-bottom: 35px;
+}
+
+.support-icon {
+    width: 75px;
+    height: 75px;
+    display: grid;
+    place-items: center;
+    margin: auto auto 20px;
+    border-radius: 22px;
+    background: #a178ff18;
+    border: 1px solid #a178ff55;
+    color: #c3a7ff;
+    font-size: 32px;
+    box-shadow: 0 0 40px #a178ff20;
+}
+
+.support-hero h1 {
+    font-size: clamp(27px, 5vw, 43px);
+    margin: 12px 0;
+    font-weight: 900;
+}
+
+.support-hero h1 span {
+    color: #b8ff39;
+}
+
+.support-hero p {
+    color: #9299a9;
+    font-size: 13px;
+    line-height: 2;
+}
+
+.support-layout {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 22px;
+    align-items: start;
+}
+
+.support-panel {
+    background: #111520;
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: 17px;
+    padding: 28px;
+}
+
+.support-panel h2 {
+    font-size: 20px;
+    margin: 0 0 8px;
+}
+
+.support-subtitle {
+    color: #8992a2;
+    font-size: 11px;
+    margin-bottom: 25px;
+    line-height: 2;
+}
+
+.support-form label {
+    display: block;
+    font-size: 12px;
+    color: #c5cad4;
+    margin: 18px 0 8px;
+}
+
+.support-form input,
+.support-form textarea {
+    width: 100%;
+    background: #090d15;
+    border: 1px solid #ffffff18;
+    border-radius: 9px;
+    color: white;
+    padding: 14px;
+    font-family: inherit;
+    font-size: 12px;
+    outline: none;
+    transition: .25s;
+}
+
+.support-form input:focus,
+.support-form textarea:focus {
+    border-color: #b8ff39;
+    box-shadow: 0 0 0 3px #b8ff3910;
+}
+
+.support-form textarea {
+    min-height: 155px;
+    resize: vertical;
+    line-height: 2;
+}
+
+.support-form input::placeholder,
+.support-form textarea::placeholder {
+    color: #626b7c;
+}
+
+.support-submit {
+    width: 100%;
+    margin-top: 22px;
+    padding: 15px;
+    border: none;
+    border-radius: 9px;
+    background: #b8ff39;
+    color: #10150a;
+    font-family: inherit;
+    font-weight: 900;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.support-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px #b8ff3930;
+}
+
+.support-info {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    padding: 16px;
+    background: #090d15;
+    border: 1px solid #ffffff0c;
+    border-radius: 11px;
+    margin-top: 13px;
+}
+
+.support-info i {
+    color: #b8ff39;
+    font-size: 22px;
+}
+
+.support-info strong,
+.support-info small {
+    display: block;
+}
+
+.support-info strong {
+    font-size: 12px;
+}
+
+.support-info small {
+    font-size: 10px;
+    color: #9299a9;
+    margin-top: 5px;
+}
+
+.ticket-section {
+    margin-top: 35px;
+}
+
+.ticket-card {
+    background: #111520;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 12px;
+    padding: 18px;
+    margin-top: 12px;
+}
+
+.ticket-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.ticket-top strong {
+    font-size: 13px;
+}
+
+.ticket-status {
+    font-size: 10px;
+    padding: 6px 11px;
+    border-radius: 20px;
+    color: #d7ff9c;
+    background: #b8ff3915;
+    border: 1px solid #b8ff3930;
+}
+
+.ticket-message {
+    color: #9ba3b2;
+    font-size: 11px;
+    line-height: 2;
+    margin: 12px 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.ticket-date {
+    color: #737e90;
+    font-size: 10px;
+}
+
+.empty-tickets {
+    padding: 25px;
+    text-align: center;
+    border: 1px dashed #ffffff20;
+    border-radius: 12px;
+    color: #9299a9;
+    font-size: 12px;
+    line-height: 2;
+    margin-top: 15px;
+}
+
+@media(max-width: 800px) {
+    .support-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .support-hero {
+        padding: 40px 15px;
+    }
+
+    .support-panel {
+        padding: 21px;
+    }
+}
+</style>
+
+<div class="support-page">
+
+    <section class="support-hero">
+        <div class="support-icon">
+            <i class="bi bi-headset"></i>
+        </div>
+
+        <span class="section-kicker">SMJ NETWORK SUPPORT CENTER</span>
+
+        <h1>HOW CAN WE <span>HELP?</span></h1>
+
+        <p>
+            مشکلی داری؟ تیم پشتیبانی SMJ آماده کمک به توئه.
+            درخواستت رو ثبت کن تا بررسی بشه.
+        </p>
+    </section>
+
+    <div class="support-layout">
+
+        <section class="support-panel">
+            <h2>ارسال تیکت جدید</h2>
+
+            <p class="support-subtitle">
+                لطفاً مشکل خودت رو با جزئیات توضیح بده.
+            </p>
+
+            <form class="support-form"
+                  method="POST"
+                  action="{{ url_for('support') }}">
+
+                <label for="subject">موضوع درخواست</label>
+
+                <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    minlength="3"
+                    maxlength="100"
+                    placeholder="مثلاً مشکل ورود به سرور"
+                    required
+                >
+
+                <label for="message">توضیحات کامل</label>
+
+                <textarea
+                    id="message"
+                    name="message"
+                    minlength="10"
+                    maxlength="3000"
+                    placeholder="مشکلت رو اینجا توضیح بده..."
+                    required
+                ></textarea>
+
+                <button class="support-submit" type="submit">
+                    <i class="bi bi-send-fill"></i>
+                    ثبت درخواست پشتیبانی
+                </button>
+
+            </form>
+        </section>
+
+        <aside class="support-panel">
+            <h2>مرکز راهنمایی</h2>
+
+            <p class="support-subtitle">
+                برای رسیدگی بهتر، اطلاعات درخواستت رو کامل وارد کن.
+            </p>
+
+            <div class="support-info">
+                <i class="bi bi-controller"></i>
+                <div>
+                    <strong>مشکلات داخل بازی</strong>
+                    <small>مشکلات اتصال، گیم‌مود و حساب بازی</small>
+                </div>
+            </div>
+
+            <div class="support-info">
+                <i class="bi bi-person-lock"></i>
+                <div>
+                    <strong>مشکلات حساب کاربری</strong>
+                    <small>ورود، ثبت‌نام و پروفایل</small>
+                </div>
+            </div>
+
+            <div class="support-info">
+                <i class="bi bi-cart-check"></i>
+                <div>
+                    <strong>فروشگاه</strong>
+                    <small>سؤالات مربوط به رنک‌ها و خریدها</small>
+                </div>
+            </div>
+
+            <div class="support-info">
+                <i class="bi bi-shield-check"></i>
+                <div>
+                    <strong>بررسی توسط تیم</strong>
+                    <small>درخواستت برای بررسی ثبت می‌شود.</small>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+
+    <section class="ticket-section">
+        <h2>درخواست‌های اخیر من</h2>
+
+        <p class="support-subtitle">
+            وضعیت تیکت‌هایی که قبلاً ارسال کرده‌ای.
+        </p>
+
+        {% if tickets %}
+
+            {% for ticket in tickets %}
+
+                <article class="ticket-card">
+
+                    <div class="ticket-top">
+                        <strong>
+                            #{{ ticket.id }} — {{ ticket.subject }}
+                        </strong>
+
+                        <span class="ticket-status">
+                            {{ ticket.status }}
+                        </span>
+                    </div>
+
+                    <p class="ticket-message">
+                        {{ ticket.message }}
+                    </p>
+
+                    <span class="ticket-date">
+                        <i class="bi bi-clock"></i>
+                        {{ ticket.created_at }}
+                    </span>
+
+                </article>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="empty-tickets">
+                <i class="bi bi-inbox" style="font-size:30px"></i>
+                <br>
+                هنوز هیچ درخواست پشتیبانی ثبت نکرده‌ای.
+            </div>
+
+        {% endif %}
+
+    </section>
+
+</div>
+
 {% endblock %}
